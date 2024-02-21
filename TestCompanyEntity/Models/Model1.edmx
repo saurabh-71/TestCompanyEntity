@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Task_CompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="idCountry" />
+          </Key>
+          <Property Name="idCountry" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="crud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Gender" Type="varchar" MaxLength="15" />
+          <Property Name="Age" Type="varchar" MaxLength="2" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
+          <Property Name="Country" Type="int" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="idState" />
+          </Key>
+          <Property Name="idState" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCountry" Type="int" />
+          <Property Name="StateName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_crud_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="crud" Type="Self.crud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="idCountry" />
+            </Principal>
+            <Dependent Role="crud">
+              <PropertyRef Name="Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_crud_State">
+          <End Role="State" Type="Self.State" Multiplicity="0..1" />
+          <End Role="crud" Type="Self.crud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="idState" />
+            </Principal>
+            <Dependent Role="crud">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_State_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="State" Type="Self.State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="idCountry" />
+            </Principal>
+            <Dependent Role="State">
+              <PropertyRef Name="idCountry" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Task_CompanyModelStoreContainer">
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="crud" EntityType="Self.crud" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_crud_Country" Association="Self.FK_crud_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="crud" EntitySet="crud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_crud_State" Association="Self.FK_crud_State">
+            <End Role="State" EntitySet="State" />
+            <End Role="crud" EntitySet="crud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_State_Country" Association="Self.FK_State_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="State" EntitySet="State" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Task_CompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="idCountry" />
+          </Key>
+          <Property Name="idCountry" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="States" Relationship="Self.FK_State_Country" FromRole="Country" ToRole="State" />
+          <NavigationProperty Name="cruds" Relationship="Task_CompanyModel.FK_crud_Country" FromRole="Country" ToRole="crud" />
+        </EntityType>
+        <EntityType Name="crud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="Int32" />
+          <Property Name="State" Type="Int32" />
+          <NavigationProperty Name="Country1" Relationship="Task_CompanyModel.FK_crud_Country" FromRole="crud" ToRole="Country" />
+          <NavigationProperty Name="State1" Relationship="Task_CompanyModel.FK_crud_State" FromRole="crud" ToRole="State" />
+          <Property Name="Age" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="idState" />
+          </Key>
+          <Property Name="idState" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCountry" Type="Int32" />
+          <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_State_Country" FromRole="State" ToRole="Country" />
+          <NavigationProperty Name="cruds" Relationship="Task_CompanyModel.FK_crud_State" FromRole="State" ToRole="crud" />
+        </EntityType>
+        <Association Name="FK_State_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="State" Type="Self.State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="idCountry" />
+            </Principal>
+            <Dependent Role="State">
+              <PropertyRef Name="idCountry" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Task_CompanyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="cruds" EntityType="Self.crud" />
+          <EntitySet Name="States" EntityType="Self.State" />
+          <AssociationSet Name="FK_State_Country" Association="Self.FK_State_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="State" EntitySet="States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_crud_Country" Association="Task_CompanyModel.FK_crud_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="crud" EntitySet="cruds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_crud_State" Association="Task_CompanyModel.FK_crud_State">
+            <End Role="State" EntitySet="States" />
+            <End Role="crud" EntitySet="cruds" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_crud_Country">
+          <End Type="Task_CompanyModel.Country" Role="Country" Multiplicity="0..1" />
+          <End Type="Task_CompanyModel.crud" Role="crud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="idCountry" />
+            </Principal>
+            <Dependent Role="crud">
+              <PropertyRef Name="Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_crud_State">
+          <End Type="Task_CompanyModel.State" Role="State" Multiplicity="0..1" />
+          <End Type="Task_CompanyModel.crud" Role="crud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="idState" />
+            </Principal>
+            <Dependent Role="crud">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Task_CompanyModelStoreContainer" CdmEntityContainer="Task_CompanyEntities">
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="Task_CompanyModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="idCountry" ColumnName="idCountry" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cruds">
+            <EntityTypeMapping TypeName="Task_CompanyModel.crud">
+              <MappingFragment StoreEntitySet="crud">
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="Task_CompanyModel.State">
+              <MappingFragment StoreEntitySet="State">
+                <ScalarProperty Name="idState" ColumnName="idState" />
+                <ScalarProperty Name="idCountry" ColumnName="idCountry" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
